@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Purchase history{% endblock %}
+
+{% block content %}
+<!--Main layout-->
+<main>
+  <div class="container">
+    <h2>Purchase history</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Purchase date</th>
+          <th scope="col">Title</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Ref code</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for object in objects %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ object.ordered_date|date:"y/n/j H:i:s" }}</td>
+          <td>
+            {% for order_item in object.items.all %}
+            <ul style='list-style-type: none; padding-left: 0;'>
+              <li>{{order_item.item.title}}</li>
+            </ul>
+            {% endfor %}
+          </td>
+          <td>
+            {% for order_item in object.items.all %}
+            <ul style='list-style-type: none; padding-left: 0;'>
+              <li>{{order_item.item.price}}</li>
+            </ul>
+            {% endfor %}
+          </td>
+          <td>
+            {% for order_item in object.items.all %}
+            <ul style='list-style-type: none; padding-left: 0;'>
+              <li>{{order_item.quantity}}</li>
+            </ul>
+            {% endfor %}
+          </td>
+          <td>{{ object.ref_code }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">Your cart is empty</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="12">
+            <a class='btn btn-primary float-right' href="/request-refund">Request refund</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<!--Main layout-->
+{% endblock content %}
